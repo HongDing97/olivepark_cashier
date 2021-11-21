@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import './App.css'
 import "antd/dist/antd.css"
 import SearchBar from "./components/searchBar"
@@ -42,6 +42,8 @@ const App = () => {
 
     ]
 
+    const inputEl = useRef(null)
+
     const [items, setItems] = useState([])
 
     const [transactionID, setTransactionID] = useState(getTransactionID())
@@ -51,6 +53,7 @@ const App = () => {
     const [showMask, setShowMask] = useState(false)
 
     useEffect(() => {
+        reFocus()
         const timer = setInterval(() => {
             setTime(getTime())
         }, 1000)
@@ -58,6 +61,12 @@ const App = () => {
             clearInterval(timer)
         })
     })
+
+    function reFocus() {
+        if(inputEl){
+            inputEl.current.focus()
+        }
+    }
 
     function getTime() {
         const d = new Date(Date.now())
@@ -100,10 +109,11 @@ const App = () => {
     function handleTender() {
         if (items.length > 0) {
             setTimeout(() => setShowMask(true), 200)
-            setTimeout(() => setShowMask(false), 2500)
+            setTimeout(() => setShowMask(false), 3000)
             setItems([])
             setTransactionID(getTransactionID())
         }
+        reFocus()
     }
 
     return (
@@ -155,7 +165,7 @@ const App = () => {
                         <span>Transaction: {transactionID}</span>
                     </div>
                 </div>
-                <SearchBar handleBarcodeInput={handleBarcodeInput}/>
+                <SearchBar handleBarcodeInput={handleBarcodeInput} inputRef={inputEl}/>
                 <div className='table-container'>
                     <Table
                         dataSource={items}

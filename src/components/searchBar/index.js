@@ -1,9 +1,8 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import './index.css'
 
 const SearchBar = (props) => {
 
-    const inputEl = useRef(null)
 
     function handleInputChange(e) {
         const text = e.target.value
@@ -13,10 +12,11 @@ const SearchBar = (props) => {
         }
     }
 
+
     return (
         <div>
             <input
-                ref={inputEl}
+                ref={props.inputRef}
                 className='searchbar-input'
                 placeholder='Search / Barcode / Item Name'
                 onChange={handleInputChange}
