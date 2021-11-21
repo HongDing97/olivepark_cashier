@@ -1,38 +1,104 @@
-.App {
-  text-align: center;
+.main-container {
+    position: absolute;
+    top: 20px;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    flex-direction: column;
+    display: flex;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.title {
+    border-radius: 16px;
+    margin-bottom: 20px;
+    padding: 0 20px 0 20px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-image: url('imgs/background.jpg');
+    background-position: center;
+    background-size: cover;
+    box-shadow: 3px 3px 15px 0 rgba(230, 255, 0, 0.27);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.title span {
+    font-size: 16px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.basic-info {
+    padding: 20px 20px 10px;
+    border-radius: 16px;
+    background-color: #eeeeee;
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #2c2c2c;
 }
 
-.App-link {
-  color: #61dafb;
+.basic-info-col {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.table-container {
+    margin-top: 20px;
 }
+
+.editable-row {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.bottom-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 130px;
+    display: grid;
+    grid-template-columns: auto max-content;
+}
+
+.total-price {
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 48px;
+    font-weight: 700;
+    background-image: url('./imgs/logo2.png');
+    background-size: 220px;
+    background-repeat: no-repeat;
+    background-position: bottom 20px right 20px;
+}
+
+.total-price svg {
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+.checkout-btn {
+    padding: 15px 60px 0 60px;
+    border-radius: 16px;
+    background: #45B649;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'HundredMiraclesPERSONALUSE';
+    font-size: 48px;
+    letter-spacing: 2px;
+    color: #fff;
+    box-shadow: 3px 3px 15px 0 rgba(0, 255, 13, 0.5);
+    cursor: pointer;
+    transition: background-color 0.5s ease-out;
+}
+
+@media(hover: hover) and (pointer: fine) {
+    .checkout-btn:hover {
+        background: #b7d746;
+        transition: background-color 0.5s ease-out;
+        box-shadow: 3px 3px 15px 3px rgba(230, 255, 0, 0.5);
+    }
+}
+
+

@@ -1,0 +1,35 @@
+.transparent-mask {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
+.transparent-mask img {
+    z-index: 20;
+    position: absolute;
+    top: 35%;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 70%;
+    opacity: 0;
+}
+
+.blur {
+    transition: backdrop-filter 0.5s ease-out;
+    backdrop-filter: saturate(180%) blur(20px);
+}
+
+.clear-blur {
+    transition: backdrop-filter 0.5s ease-out;
+    backdrop-filter: saturate(100%) blur(0px);
+}
+
+
+.pic-display {
+    transition: opacity 0.5s ease-out;
+    opacity: 100% !important;
+}
