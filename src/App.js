@@ -40,6 +40,57 @@ const App = () => {
             price: 8900921
         },
 
+        // discount
+        {
+            barcode: '4639219333003',
+            name: 'Discount 7.9% Off',
+            price: -0.079
+        },
+        {
+            barcode: '4639219333102',
+            name: 'Discount 9.9% Off',
+            price: -0.099
+        },
+        {
+            barcode: '4639219333201',
+            name: 'Discount 12% Off',
+            price: -0.12
+        },
+        {
+            barcode: '4639219333300',
+            name: 'Discount 15% Off',
+            price: -0.15
+        },
+        {
+            barcode: '4639219333409',
+            name: 'Discount 35% Off',
+            price: -0.35
+        },
+        {
+            barcode: '4639219333508',
+            name: 'Discount 6',
+            price: 0
+        },
+        {
+            barcode: '4639219333607',
+            name: 'Discount 7',
+            price: 0
+        },
+        {
+            barcode: '4639219333706',
+            name: 'Discount 8',
+            price: 0
+        },
+        {
+            barcode: '4639219333805',
+            name: 'Discount 9',
+            price: 0
+        },
+        {
+            barcode: '4639219333904',
+            name: 'Discount 10',
+            price: 0
+        },
     ]
 
     const inputEl = useRef(null)
@@ -63,7 +114,7 @@ const App = () => {
     })
 
     function reFocus() {
-        if(inputEl){
+        if (inputEl) {
             inputEl.current.focus()
         }
     }
@@ -78,7 +129,6 @@ const App = () => {
     }
 
     function handleBarcodeInput(barcode) {
-        console.log(barcode)
         const len = items.length
         const foundItem = data.find(e => e.barcode === barcode)
         let i = [...items]
@@ -90,6 +140,7 @@ const App = () => {
                     barcode: barcode,
                     name: foundItem.name,
                     price: foundItem.price,
+                    displayPrice: foundItem.price > 0 ? foundItem.price.toFixed(2) : totalDue() * foundItem.price.toFixed(2),
                     qty: 1
                 })
             } else {
@@ -99,11 +150,32 @@ const App = () => {
         setItems(i)
     }
 
-    function totalCost() {
+    function totalDue() {
         let sum = 0
-        for (const i of items)
-            sum += i.qty * i.price
+        for (const i of items) {
+            if (i.price > 0)
+                sum += i.qty * i.price
+        }
         return sum
+    }
+
+    function totalDiscount() {
+        let sum = 0
+        let allDiscounts = items.filter(i => i.price < 0 && i.price > -1)
+        if (allDiscounts.length > 0) {
+            allDiscounts.sort((x, y) => {
+                if (x.price < y.price) return -1
+                if (x.price > y.price) return 1
+                return 0
+            })
+            const discountRate = Math.abs(allDiscounts[0].price)
+            sum = totalDue() * discountRate
+        }
+        return sum
+    }
+
+    function calculatedAmount() {
+        return totalDue() - totalDiscount()
     }
 
     function handleTender() {
@@ -182,7 +254,7 @@ const App = () => {
                             },
                             {
                                 title: 'Price',
-                                dataIndex: 'price',
+                                dataIndex: 'displayPrice',
                                 key: 'price'
                             },
                             {
@@ -197,19 +269,34 @@ const App = () => {
                     />
                 </div>
                 <div className='bottom-container'>
-                    <div className='basic-card total-price'>
-                        <svg height="48px" viewBox="0 0 343 550" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                            <g id="page-1" stroke="none" strokeWidth="1.2" fill="none" fillRule="evenodd">
-                                <g id="6" transform="translate(-1677.000000, -467.000000)">
-                                    <g id="group" transform="translate(1677.000000, 467.000000)">
-                                        <path
-                                            d="M301.258483,273.296055 C326.615333,255.370158 340.911494,231.241606 342.780386,202.973845 C345.094956,167.956788 329.003772,133.198277 299.731852,109.990643 C272.993647,88.7898229 239.417613,79.964766 207.535646,85.2514282 L207.535646,0 L155.827174,0 L155.827174,159.826113 L191.966472,144.155728 C197.617469,141.708154 203.182285,139.639781 208.51072,138.014631 C228.108231,132.036049 250.197598,136.707124 267.606117,150.508587 C283.80318,163.349734 292.396636,181.228846 291.18518,199.563493 C290.842919,204.739349 289.801363,220.495917 265.813557,234.686431 C252.039405,242.834342 243.812833,257.268629 243.812833,273.293593 C243.810371,289.318556 252.036942,303.755305 265.816019,311.905679 C289.801363,326.09373 290.842919,341.852761 291.18518,347.031079 C292.396636,365.363264 283.80318,383.239913 267.606117,396.081061 C250.20006,409.884986 228.108231,414.558523 208.51072,408.575017 C208.163535,408.469136 207.808963,408.346018 207.464239,408.237675 L207.464239,289.200364 L155.755767,289.200364 L155.755767,382.254974 C120.810689,358.557332 84.5704373,321.695976 58.0390665,273.296055 C70.4934213,250.575966 85.6538529,229.387457 103.217497,210.17129 L65.0517202,175.284737 C41.3027577,201.267438 21.3408251,230.369934 5.72240425,261.787038 L0,273.296055 L5.72486656,284.805072 C45.3975762,364.60486 105.165183,415.969449 155.755767,442.30919 L155.755767,550 L207.464239,550 L207.464239,461.306209 C213.528904,462.315772 219.650203,462.832865 225.778888,462.832865 C251.896591,462.832865 278.061078,453.783734 299.731852,436.601467 C329.003772,413.393832 345.094956,378.632859 342.780386,343.620727 C340.911494,315.348042 326.612871,291.219489 301.258483,273.296055"
-                                            id="Fill-1" fill="#000000" mask="url(#mask-2)"/>
+                    <div className='basic-card price-info-container'>
+                        <div>
+                            <svg height="36px" viewBox="0 0 343 550" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <g id="page-1" stroke="none" strokeWidth="1.2" fill="none" fillRule="evenodd">
+                                    <g id="6" transform="translate(-1677.000000, -467.000000)">
+                                        <g id="group" transform="translate(1677.000000, 467.000000)">
+                                            <path
+                                                d="M301.258483,273.296055 C326.615333,255.370158 340.911494,231.241606 342.780386,202.973845 C345.094956,167.956788 329.003772,133.198277 299.731852,109.990643 C272.993647,88.7898229 239.417613,79.964766 207.535646,85.2514282 L207.535646,0 L155.827174,0 L155.827174,159.826113 L191.966472,144.155728 C197.617469,141.708154 203.182285,139.639781 208.51072,138.014631 C228.108231,132.036049 250.197598,136.707124 267.606117,150.508587 C283.80318,163.349734 292.396636,181.228846 291.18518,199.563493 C290.842919,204.739349 289.801363,220.495917 265.813557,234.686431 C252.039405,242.834342 243.812833,257.268629 243.812833,273.293593 C243.810371,289.318556 252.036942,303.755305 265.816019,311.905679 C289.801363,326.09373 290.842919,341.852761 291.18518,347.031079 C292.396636,365.363264 283.80318,383.239913 267.606117,396.081061 C250.20006,409.884986 228.108231,414.558523 208.51072,408.575017 C208.163535,408.469136 207.808963,408.346018 207.464239,408.237675 L207.464239,289.200364 L155.755767,289.200364 L155.755767,382.254974 C120.810689,358.557332 84.5704373,321.695976 58.0390665,273.296055 C70.4934213,250.575966 85.6538529,229.387457 103.217497,210.17129 L65.0517202,175.284737 C41.3027577,201.267438 21.3408251,230.369934 5.72240425,261.787038 L0,273.296055 L5.72486656,284.805072 C45.3975762,364.60486 105.165183,415.969449 155.755767,442.30919 L155.755767,550 L207.464239,550 L207.464239,461.306209 C213.528904,462.315772 219.650203,462.832865 225.778888,462.832865 C251.896591,462.832865 278.061078,453.783734 299.731852,436.601467 C329.003772,413.393832 345.094956,378.632859 342.780386,343.620727 C340.911494,315.348042 326.612871,291.219489 301.258483,273.296055"
+                                                id="Fill-1" fill="#000000" mask="url(#mask-2)"/>
+                                        </g>
                                     </g>
                                 </g>
-                            </g>
-                        </svg>
-                        <span>{totalCost()}.00</span>
+                            </svg>
+                            <span>{calculatedAmount().toFixed(2)}</span>
+                        </div>
+
+                        <div className='price-info-detail-container'>
+                            <div className='price-info-detail-group'>
+                                <div className='tag'>Total Due:</div>
+                                <div
+                                    className={`price-info-detail-value ${totalDiscount() > 0 ? ' line-crossed' : ''}`}> {totalDue().toFixed(2)}</div>
+                            </div>
+                            <div className='price-info-detail-group'>
+                                <div className='tag'>Discount:</div>
+                                <div className='price-info-detail-value'> {totalDiscount().toFixed(2)}</div>
+                            </div>
+                        </div>
+
                     </div>
                     <div className='checkout-btn' onClick={handleTender}>
                         Tender
